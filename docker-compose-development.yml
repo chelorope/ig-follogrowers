@@ -3,8 +3,10 @@ web:
   dockerfile: Dockerfile-development
   links:
    - db
+  # command: ./node_modules/.bin/nodemon --inspect=0.0.0.0:5858
   ports:
    - "8000:8000"
+   - "5858:5858"
   volumes:
    - .:/usr/src/app/
   environment:
