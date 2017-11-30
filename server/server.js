@@ -4,6 +4,7 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
+import { makeExecutableSchema } from 'graphql-tools';
 import IntlWrapper from '../client/modules/Intl/IntlWrapper';
 
 // Webpack Requirements
@@ -33,9 +34,10 @@ import Helmet from 'react-helmet';
 // Import required modules
 import routes from '../client/routes';
 import { fetchComponentData } from './util/fetchData';
-import MyGraphQLSchema from './schemas/post';
 import dummyData from './dummyData';
 import serverConfig from './config';
+import typeDefs from './schemas/schema';
+import resolvers from './resolvers/resolvers';
 
 // Set native promises as mongoose promise
 mongoose.Promise = global.Promise;
@@ -59,7 +61,10 @@ app.use(Express.static(path.resolve(__dirname, '../dist/client')));
 app.use(
   '/api',
   graphqlHTTP({
-    schema: MyGraphQLSchema,
+    schema: makeExecutableSchema({
+      typeDefs,
+      resolvers,
+    }),
     graphiql: true,
   })
 );
